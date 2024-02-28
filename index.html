@@ -20,9 +20,27 @@
             <!-- card all -->
             <div id="show-details-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
             </div>
+            <!-- modal -->
+            <div>
+                <!-- You can open the modal using ID.showModal() method -->
+                <dialog id="show_details_modal" class="modal">
+                    <div class="modal-box">
+                        <form method="dialog">
+                            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                        </form>
+                        <div id="show-Modal-container">
+                            <p class="py-4">Press ESC key or click on ✕ button to close</p>
+                            <h3 class="font-bold text-lg">Hello!</h3>
+                        </div>
+                    </div>
+                </dialog>
+            </div>
+
+
+
             <!-- see more btn -->
-            <div class="text-center my-5">
-                <button onclick="handleSeeMoreBtn()" class="btn btn-error text-white">See More</button>
+            <div id="seeMoreBtn" class="text-center my-5">
+                <button onclick="handleSeeMoreBtn(true)" class="btn btn-error text-white">See More</button>
             </div>
         </section>
 

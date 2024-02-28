@@ -9,9 +9,18 @@ const loaderApi = async (isShowAll) => {
 // in api array loop use for each
 const LoopApi = (dataList, isShowAll) => {
     const showDetailsContainer = document.getElementById("show-details-container");
+    const seeMoreBtn = document.getElementById("seeMoreBtn");
+    if(dataList.length > 6 && isShowAll){
+      seeMoreBtn.classList.add("hidden");
+    }
+    else{
+      seeMoreBtn.classList.remove("hidden");
+    }
     // i want show max 6 other when show click show more
-    console.log(!isShowAll)
-    dataList = dataList.slice(0, 6);
+    if(!isShowAll){
+      dataList = dataList.slice(0, 6);
+    }
+    showDetailsContainer.innerHTML = '';
     dataList.forEach(data => {
         // console.log(data)
         const div = document.createElement("div");
@@ -29,7 +38,7 @@ const LoopApi = (dataList, isShowAll) => {
                        <h1 class="font-bold text-2xl">${data.name}</h1>
                       <p>${data.published_in}</p> 
                       </div>
-                        <button class=" text-red-500"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <button onclick="handleShowDetails('${data.id}') ; show_details_modal.showModal()" class=" text-red-500"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                       </svg>
                       </button>
@@ -43,11 +52,28 @@ const LoopApi = (dataList, isShowAll) => {
     });
 
 }
+// 
+const handleShowDetails = async(id) =>{
+  const res = await fetch(`https://openapi.programming-hero.com/api/ai/tool/${id}`)
+  const data = await res.json()
+  const apiDetails = data.data
+  hubShowApiDetails(apiDetails)
+} 
+
+// show output dynamic
+const hubShowApiDetails = (content) =>{
+    console.log(content);
+    const showModalContainer = document.getElementById("show-Modal-container");
+
+
+
+    show_details_modal.showModal();
+}
+
 
 
 // see more btn 
 const handleSeeMoreBtn = (isShowAll) => {
-
     loaderApi(isShowAll)
 }
 
