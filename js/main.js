@@ -1,30 +1,30 @@
 // api
 const loaderApi = async (isShowAll) => {
-    const res = await fetch(`https://openapi.programming-hero.com/api/ai/tools`)
-    const data = await res.json()
-    const apiHubList = data.data.tools;
-    LoopApi(apiHubList, isShowAll);
+  const res = await fetch(`https://openapi.programming-hero.com/api/ai/tools`)
+  const data = await res.json()
+  const apiHubList = data.data.tools;
+  LoopApi(apiHubList, isShowAll);
 }
 
 // in api array loop use for each
 const LoopApi = (dataList, isShowAll) => {
-    const showDetailsContainer = document.getElementById("show-details-container");
-    const seeMoreBtn = document.getElementById("seeMoreBtn");
-    if(dataList.length > 6 && isShowAll){
-      seeMoreBtn.classList.add("hidden");
-    }
-    else{
-      seeMoreBtn.classList.remove("hidden");
-    }
-    // i want show max 6 other when show click show more
-    if(!isShowAll){
-      dataList = dataList.slice(0, 6);
-    }
-    showDetailsContainer.innerHTML = '';
-    dataList.forEach(data => {
-        // console.log(data)
-        const div = document.createElement("div");
-        div.innerHTML = `
+  const showDetailsContainer = document.getElementById("show-details-container");
+  const seeMoreBtn = document.getElementById("seeMoreBtn");
+  if (dataList.length > 6 && isShowAll) {
+    seeMoreBtn.classList.add("hidden");
+  }
+  else {
+    seeMoreBtn.classList.remove("hidden");
+  }
+  // i want show max 6 other when show click show more
+  if (!isShowAll) {
+    dataList = dataList.slice(0, 6);
+  }
+  showDetailsContainer.innerHTML = '';
+  dataList.forEach(data => {
+    // console.log(data)
+    const div = document.createElement("div");
+    div.innerHTML = `
         <div class="card bg-base-100 shadow-xl">
                     <figure><img src="${data.image}" alt="Shoes" /></figure>
                     <div class="card-body">
@@ -46,35 +46,71 @@ const LoopApi = (dataList, isShowAll) => {
                     </div>
                   </div>
         `
-        showDetailsContainer.appendChild(div);
+    showDetailsContainer.appendChild(div);
 
 
-    });
+  });
 
 }
 // 
-const handleShowDetails = async(id) =>{
+const handleShowDetails = async (id) => {
   const res = await fetch(`https://openapi.programming-hero.com/api/ai/tool/${id}`)
   const data = await res.json()
   const apiDetails = data.data
   hubShowApiDetails(apiDetails)
-} 
+}
 
 // show output dynamic
-const hubShowApiDetails = (content) =>{
-    console.log(content);
-    const showModalContainer = document.getElementById("show-Modal-container");
+const hubShowApiDetails = (content) => {
+  console.log(content);
+  const showModalContainer = document.getElementById("show-Modal-container");
+
+  showModalContainer.innerHTML = `
+    <p>${content?.description} </p>
+    <div class="flex justify-evenly items-center"> 
+    <div class="text-yellow-500 p-2 rounded-lg"> 
+    <h4>${content?.pricing[0]?.plan} </h4>
+    <p>${content?.pricing[0]?.price}</p>
+    </div>
+    <div class=" p-2 rounded-lg text-red-500"> 
+    <h4>${content?.pricing[1]?.plan} </h4>
+    <p>${content?.pricing[1]?.price} </p>
+    </div>
+    <div class=" p-2 rounded-lg text-orange-500"> 
+    <h4>${content?.pricing[2]?.plan}</h4>
+    <p>${content?.pricing[2]?.price}</p>
+    </div>
+    </div>
+    <div class="flex justify-between gap-1 items-center *:space-y-2">
+    
+    <div>
+    <h2 class="md:text-2xl font-bold">Features</h2>
+    <ul> <li>${content?.features["1"]?.feature_name}</li> <li>${content?.features["2"]?.feature_name}</li> <li>${content?.features["3"]?.feature_name}</li> </ul>
+    </div>
+
+    <div>
+    <h2 class="md:text-2xl font-bold">Integrations </h2>
+    <ul> 
+       <li>${content?.integrations[0]}</li>
+       <li>${content?.integrations[1]}</li>
+       <li>${content?.integrations[2]}</li>
+     </ul>
+    </div>
+
+    </div>
+
+    
+    `
 
 
-
-    show_details_modal.showModal();
+  show_details_modal.showModal();
 }
 
 
 
 // see more btn 
 const handleSeeMoreBtn = (isShowAll) => {
-    loaderApi(isShowAll)
+  loaderApi(isShowAll)
 }
 
 loaderApi()
